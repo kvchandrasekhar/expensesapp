@@ -4,7 +4,7 @@ import {
     SignUpCommand,
     InitiateAuthCommand,
     GlobalSignOutCommand
-} from "https://esm.sh/@aws-sdk/client-cognito-identity-provider@3.500.0";
+} from "https://esm.sh/@aws-sdk/client-cognito-identity-provider@3.525.0";
 
 
 const COGNITO_REGION = window.APP_CONFIG ? window.APP_CONFIG.COGNITO_REGION : "";

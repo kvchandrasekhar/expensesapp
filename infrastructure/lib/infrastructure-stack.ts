@@ -174,6 +174,7 @@ export class InfrastructureStack extends cdk.Stack {
     new s3deploy.BucketDeployment(this, 'DeployKVExpenseTrackerConfig', {
       sources: [s3deploy.Source.data('config.js', configData)],
       destinationBucket: siteBucket,
+      prune: false,
       distribution,
       distributionPaths: ['/config.js'],
     });

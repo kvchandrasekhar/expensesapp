@@ -37,5 +37,5 @@ jobs:
         working-directory: ./infrastructure
 
       - name: Deploy CDK Stack
-        run: npx cdk deploy --require-approval never
+        run: npx cdk bootstrap && npx cdk deploy --require-approval never
         working-directory: ./infrastructure

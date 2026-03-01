@@ -4,7 +4,7 @@ import {
     SignUpCommand,
     InitiateAuthCommand,
     GlobalSignOutCommand
-} from "https://cdn.jsdelivr.net/npm/@aws-sdk/client-cognito-identity-provider@3.525.0/+esm";
+} from "https://cdn.skypack.dev/@aws-sdk/client-cognito-identity-provider@3.525.0";
 
 
 const COGNITO_REGION = window.APP_CONFIG ? window.APP_CONFIG.COGNITO_REGION : "";

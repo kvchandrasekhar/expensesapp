@@ -1,0 +1,42 @@
+name: Deploy AWS Infrastructure and App
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials using OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          # TODO: Replace with the actual IAM Role ARN created for GitHub Actions OIDC
+          role-to-assume: arn:aws:iam::123456789012:role/GitHubActionsDeploymentRole
+          aws-region: us-east-1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install CDK Dependencies
+        run: npm ci
+        working-directory: ./infrastructure
+        
+      - name: Build and Synthesize CDK Stack
+        run: npm run build && npx cdk synth
+        working-directory: ./infrastructure
+
+      - name: Deploy CDK Stack
+        run: npx cdk deploy --require-approval never
+        working-directory: ./infrastructure

@@ -2,8 +2,8 @@
 import {
     getTransactions, addTransaction, updateTransaction, deleteTransaction,
     restoreTransaction, getSettings, updateSettings, getBudget, setBudget,
-    importTransactions, resetAllData, getAllData,
-} from './storage.js';
+    importTransactions, resetAllData, getAllData, pullFromCloud
+} from './api.js';
 
 import {
     generateId, sanitize, formatCurrency, formatDate, formatDateGroup,
@@ -1018,6 +1018,13 @@ function init() {
 
     if (isLoggedIn()) {
         showApp();
+        // Sync with backend asynchronously
+        pullFromCloud().then((changed) => {
+            if (changed) {
+                // If cloud data is different/newer, refresh the UI
+                refreshCurrentView();
+            }
+        });
     } else {
         showAuth();
     }

@@ -39,7 +39,7 @@ export class InfrastructureStack extends cdk.Stack {
     });
 
     // Deploy Frontend Assets to S3 (Exclude CDK infra and dotfiles)
-    new s3deploy.BucketDeployment(this, 'DeployKVExpenseTrackerWebsite', {
+    const websiteDeployment = new s3deploy.BucketDeployment(this, 'DeployKVExpenseTrackerWebsite', {
       sources: [s3deploy.Source.asset(path.join(__dirname, '../../'), {
         exclude: [
           'infrastructure', 'infrastructure/**', 'node_modules', 'node_modules/**',
@@ -171,13 +171,14 @@ export class InfrastructureStack extends cdk.Stack {
       COGNITO_REGION: "${this.region}"
     };`;
 
-    new s3deploy.BucketDeployment(this, 'DeployKVExpenseTrackerConfig', {
+    const configDeployment = new s3deploy.BucketDeployment(this, 'DeployKVExpenseTrackerConfig', {
       sources: [s3deploy.Source.data('config.js', configData)],
       destinationBucket: siteBucket,
       prune: false,
       distribution,
       distributionPaths: ['/config.js'],
     });
+    configDeployment.node.addDependency(websiteDeployment);
 
     // ==========================================
     // Outputs
